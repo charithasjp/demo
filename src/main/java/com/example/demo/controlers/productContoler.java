@@ -32,8 +32,8 @@ public class productContoler {
     } 
       
     @PostMapping("") 
-    public product createBook(@RequestBody product book) { 
-        return productService.createBook(book); 
+    public product createProduct(@RequestBody product p1) { 
+        return productService.createBook(p1); 
     } 
       
     @PutMapping("/{id}") 
@@ -42,7 +42,7 @@ public class productContoler {
     } 
       
     @DeleteMapping("/{id}") 
-    public void deleteBook(@PathVariable Long id) { 
+    public void deleteProduct(@PathVariable Long id) { 
         productService.deleteProduct(id); 
     } 
 }

@@ -1,54 +1,85 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head> 
-    <title>Wiyamana</title> 
+
+<head>
+    <title>Wiyamana</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <script>
-        const xhttpr = new XMLHttpRequest();
-    xhttpr.open('GET', '/products', true);
-    
-    xhttpr.send(null);
-    
-    xhttpr.onload = ()=> {
-      if (xhttpr.status === 200) {
-          const jsonData = JSON.parse(xhttpr.response);
-          
-          let text = xhttpr.response+"\n Product\n"
-    for (var i = 0; i < jsonData.length; i++) {
-        var product = jsonData[i].pname;
-        document.getElementById("tbl_product").innerHTML=document.getElementById("tbl_product").innerHTML+
-        "<tr><td>"+jsonData[i].code+"</td><td>"+jsonData[i].pname+"</td></tr>"
-        text=text+product;
-        
-    }
-      
-      
-      
-     
-      } else {
-          // Handle error
-      }
-    
-    
-    };
-    
-    
-    
+        function displayProducts() {
+            const xhttpr = new XMLHttpRequest();
+            xhttpr.open('GET', '/products', true);
+
+            xhttpr.send(null);
+
+            xhttpr.onload = () => {
+                if (xhttpr.status === 200) {
+                    const jsonData = JSON.parse(xhttpr.response);
+
+                    let text = xhttpr.response + "\n Product\n"
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var product = jsonData[i].pname;
+                        document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
+                            "<tr><td>" + jsonData[i].code + "</td><td>" + jsonData[i].pname + "</td><td>" +
+                            "<button onclick='deleteProduct(" + jsonData[i].code + ")'>DELETE</button>"
+                            + "</td></tr>"
+                        text = text + product;
+
+                    }
+
+
+
+
+                } else {
+                    // Handle error
+                }
+
+
+            };
+        }
+
+        function deleteProduct(code) {
+            alert(code);
+
+            const xhttpr = new XMLHttpRequest();
+            xhttpr.open('DELETE', '/products/'+code, true);
+            xhttpr.send(null);
+
+            xhttpr.onload = () => {
+                if (xhttpr.status === 200) {
+                    const jsonData = JSON.parse(xhttpr.response);
+
+
+                } else {
+                    // Handle error
+                }
+
+
+            };
+
+        }
+
+
+        displayProducts();
     </script>
-    
+
 </head>
+
 <body>
-    
-
-    <table id="tbl_product"></table>
-    <tr><th>Code</th><th>Product Name</th></tr>
-    
-  
-  
 
 
+    <table id="tbl_product">
+        <tr>
+            <th>Code</th>
+            <th>Product Name</th>
+        </tr>
+    </table>
 
-<p id="demo"></p>
+
+
+
+
+    <p id="demo"></p>
 </body>
+
 </html>
