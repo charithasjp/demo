@@ -14,13 +14,15 @@ public class product {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long code; 
     private String pname; 
+    private float price;
 
     public product(){
 
     }
-    public product(String pname,long code){
+    public product(String pname,long code,float price){
         this.pname=pname;
         this.code=code;
+        this.price=price;
     }
     
     
@@ -30,13 +32,22 @@ public class product {
     public void setPname(String pname) {
         this.pname = pname;
     }
+
+    @Id
     public Long getCode() {
         return code;
     }
     public void setCode(Long code) {
         this.code = code;
     }
+    public float getPrice() {
+        return price;
+    }
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
+    
     
     
 }

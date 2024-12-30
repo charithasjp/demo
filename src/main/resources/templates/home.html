@@ -1,9 +1,58 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html>
 
 <head>
-    <title>Wiyamana</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        li {
+            float: right;
+
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            background-color: #02041f;
+            margin: 15dp;
+        }
+
+        li a:hover {
+            background-color: #0c158a;
+            margin: 5dp;
+        }
+
+
+
+
+        .product {
+            padding: 10px;
+            background-color: #eeebeb;
+            width: 250px;
+            float: left;
+            margin-left: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid rgba(148, 146, 146, 0.856);
+
+        }
+
+        .product:hover {
+            background-color: #a2a8f5;
+        }
+
+        
+    </style>
+
 
     <script>
         function displayProducts() {
@@ -16,14 +65,16 @@
                 if (xhttpr.status === 200) {
                     const jsonData = JSON.parse(xhttpr.response);
 
-                    let text = xhttpr.response + "\n Product\n"
                     for (var i = 0; i < jsonData.length; i++) {
-                        var product = jsonData[i].pname;
-                        document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
-                            "<tr><td>" + jsonData[i].code + "</td><td>" + jsonData[i].pname + "</td><td>" +
-                            "<button onclick='deleteProduct(" + jsonData[i].code + ")'>DELETE</button>"
-                            + "</td></tr>"
-                        text = text + product;
+      
+                        document.getElementById("main").innerHTML = document.getElementById("main").innerHTML +
+                            '<div class="product">'+
+                            '<img src = "def.png" width = "150px" height = "150px"></img> <br>'+
+                                '<p>'+jsonData[i].pname+'</p>'+
+                                '<p>Price : Rs.'+jsonData[i].price+'</p>'+
+                                '<p>Code :'+jsonData[i].code+'</p>'+
+                            '</div>';
+
 
                     }
 
@@ -38,48 +89,23 @@
             };
         }
 
-        function deleteProduct(code) {
-            alert(code);
-
-            const xhttpr = new XMLHttpRequest();
-            xhttpr.open('DELETE', '/products/'+code, true);
-            xhttpr.send(null);
-
-            xhttpr.onload = () => {
-                if (xhttpr.status === 200) {
-                    const jsonData = JSON.parse(xhttpr.response);
-
-
-                } else {
-                    // Handle error
-                }
-
-
-            };
-
-        }
-
-
         displayProducts();
     </script>
-
 </head>
 
 <body>
 
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#news">Manage Product</a></li>
+        <li><a href="#contact">Contact</a></li>
 
-    <table id="tbl_product">
-        <tr>
-            <th>Code</th>
-            <th>Product Name</th>
-        </tr>
-    </table>
+    </ul>
 
+    <div  id="main">
 
+        <div>
 
-
-
-    <p id="demo"></p>
 </body>
 
 </html>

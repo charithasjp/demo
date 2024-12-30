@@ -31,9 +31,10 @@ public class productContoler {
         return productService.getProductById(id); 
     } 
       
-    @PostMapping("") 
+    @PostMapping("/add") 
     public product createProduct(@RequestBody product p1) { 
-        return productService.createBook(p1); 
+        //return p1;
+        return productService.createProduct(p1); 
     } 
       
     @PutMapping("/{id}") 

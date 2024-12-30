@@ -12,7 +12,12 @@ public class DemoController {
 
     
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage_product", method = RequestMethod.GET)
+	public String manage_product() {
+		return "manage_product";
+	}
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home() {
 		return "home";
 	}

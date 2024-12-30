@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Wiyamana</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script>
+        function displayProducts() {
+            const xhttpr = new XMLHttpRequest();
+            xhttpr.open('GET', '/products', true);
+
+            xhttpr.send(null);
+
+            xhttpr.onload = () => {
+                if (xhttpr.status === 200) {
+                    const jsonData = JSON.parse(xhttpr.response);
+
+                    let text = xhttpr.response + "\n Product\n"
+                    for (var i = 0; i < jsonData.length; i++) {
+                        var product = jsonData[i].pname;
+                        document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
+                            "<tr id='"+jsonData[i].code+"'><td>" + jsonData[i].code + "</td><td>" + jsonData[i].pname + "</td><td>Rs ." +
+                                jsonData[i].price + "</td><td>"+
+                            "<button onclick='deleteProduct("+jsonData[i].code+")'>DELETE</button>"
+                            + "</td></tr>"
+                        text = text + product;
+
+                    }
+
+
+
+
+                } else {
+                    // Handle error
+                }
+
+
+            };
+        }
+
+        function deleteProduct(code) {
+           
+
+            const xhttpr = new XMLHttpRequest();
+            xhttpr.open('DELETE', '/products/' + code, true);
+            xhttpr.send(null);
+
+            xhttpr.onload = () => {
+                if (xhttpr.status === 200) {
+                    //const jsonData = JSON.parse(xhttpr.response);
+                    document.getElementById(code).remove();
+
+
+                } else {
+                    // Handle error
+                }
+
+
+            };
+
+        }
+
+        function addProduct() {
+
+            
+            var code = document.getElementById("code").value;
+            var name = document.getElementById("name").value;
+            var price = document.getElementById("price").value;
+            const xhttpr = new XMLHttpRequest();
+            
+            xhttpr.open('POST', '/products/add');
+            xhttpr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+
+            var json = new Object();
+            json.code=code;
+            json.pname=name;
+            json.price=price;
+            var jsonProduct = JSON.stringify(json);
+            xhttpr.send(jsonProduct);
+      
+
+            xhttpr.onload = () => {
+                if (xhttpr.status === 200) {
+                    
+                    const jsonData = JSON.parse(xhttpr.response);
+                    document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
+                            "<tr id='"+code+"'><td>" + code + "</td><td>" + name + "</td><td>Rs. " +
+                                 price + "</td><td>"+
+                            "<button onclick='deleteProduct("+code+")'>DELETE</button>"
+                            + "</td></tr>"
+
+
+                } else if(xhttpr.status === 500){
+                    alert("Dublicate code");
+                }else{
+                    alert("Error");
+                }
+
+
+            };
+
+        }
+
+
+        displayProducts();
+    </script>
+
+</head>
+
+<body>
+
+    <div>
+
+        <table id="tbl_product">
+            <tr>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Price </th>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+
+        <h2>Add New Product</h2>
+
+
+        <label>Product name:</label><br>
+        <input type="text" id="name"><br>
+        <label>Product Code</label><br>
+        <input type="text" id="code"><br>
+        <label>Price</label><br>
+        <input type="text" id="price"><br><br>
+        <button onclick="addProduct()">ADD</button>
+
+    </div>
+
+
+
+
+
+    <p id="demo"></p>
+</body>
+
+</html>
