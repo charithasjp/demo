@@ -3,35 +3,7 @@
 
 <head>
     <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #fff;
-        }
-
-        li {
-            float: right;
-
-        }
-
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            background-color: #02041f;
-            margin: 15dp;
-        }
-
-        li a:hover {
-            background-color: #0c158a;
-            margin: 5dp;
-        }
-
-
+       
 
 
         .product {
@@ -72,7 +44,8 @@
                             '<img src = "def.png" width = "150px" height = "150px"></img> <br>'+
                                 '<p>'+jsonData[i].pname+'</p>'+
                                 '<p>Price : Rs.'+jsonData[i].price+'</p>'+
-                                '<p>Code :'+jsonData[i].code+'</p>'+
+                                '<p>Code :'+jsonData[i].code+'</p><br>'+
+                                ' <button onclick="cart()">ADD to Cart</button>'
                             '</div>';
 
 
@@ -95,12 +68,7 @@
 
 <body>
 
-    <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#news">Manage Product</a></li>
-        <li><a href="#contact">Contact</a></li>
-
-    </ul>
+   
 
     <div  id="main">
 

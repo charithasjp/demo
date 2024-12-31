@@ -5,6 +5,8 @@
     <title>Wiyamana</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
+    
+
     <script>
         function displayProducts() {
             const xhttpr = new XMLHttpRequest();
@@ -16,15 +18,15 @@
                 if (xhttpr.status === 200) {
                     const jsonData = JSON.parse(xhttpr.response);
 
-                    let text = xhttpr.response + "\n Product\n"
+                    
                     for (var i = 0; i < jsonData.length; i++) {
                         var product = jsonData[i].pname;
                         document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
-                            "<tr id='"+jsonData[i].code+"'><td>" + jsonData[i].code + "</td><td>" + jsonData[i].pname + "</td><td>Rs ." +
-                                jsonData[i].price + "</td><td>"+
-                            "<button onclick='deleteProduct("+jsonData[i].code+")'>DELETE</button>"
+                            "<tr id='" + jsonData[i].code + "'><td>" + jsonData[i].code + "</td><td>" + jsonData[i].pname + "</td><td>Rs ." +
+                            jsonData[i].price + "</td><td>" +
+                            "<button onclick='deleteProduct(" + jsonData[i].code + ")'>DELETE</button>"
                             + "</td></tr>"
-                        text = text + product;
+                        
 
                     }
 
@@ -40,7 +42,7 @@
         }
 
         function deleteProduct(code) {
-           
+
 
             const xhttpr = new XMLHttpRequest();
             xhttpr.open('DELETE', '/products/' + code, true);
@@ -63,38 +65,70 @@
 
         function addProduct() {
 
-            
+
             var code = document.getElementById("code").value;
             var name = document.getElementById("name").value;
             var price = document.getElementById("price").value;
             const xhttpr = new XMLHttpRequest();
-            
+
             xhttpr.open('POST', '/products/add');
             xhttpr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
 
             var json = new Object();
-            json.code=code;
-            json.pname=name;
-            json.price=price;
+            json.code = code;
+            json.pname = name;
+            json.price = price;
             var jsonProduct = JSON.stringify(json);
             xhttpr.send(jsonProduct);
-      
+
 
             xhttpr.onload = () => {
                 if (xhttpr.status === 200) {
-                    
+
                     const jsonData = JSON.parse(xhttpr.response);
                     document.getElementById("tbl_product").innerHTML = document.getElementById("tbl_product").innerHTML +
-                            "<tr id='"+code+"'><td>" + code + "</td><td>" + name + "</td><td>Rs. " +
-                                 price + "</td><td>"+
-                            "<button onclick='deleteProduct("+code+")'>DELETE</button>"
-                            + "</td></tr>"
+                        "<tr id='" + code + "'><td>" + code + "</td><td>" + name + "</td><td>Rs. " +
+                        price + "</td><td>" +
+                        "<button onclick='deleteProduct(" + code + ")'>DELETE</button>"
+                        + "</td></tr>";
+
+                    addProductImage();
 
 
-                } else if(xhttpr.status === 500){
+                } else if (xhttpr.status === 500) {
                     alert("Dublicate code");
-                }else{
+                } else {
+                    alert("Error");
+                }
+
+
+            };
+
+        }
+
+        function addProductImage() {
+
+
+            const xhttpr = new XMLHttpRequest();
+
+            xhttpr.open('POST', '/image');
+            xhttpr.setRequestHeader('Content-Type', 'multipart/form-data');
+
+
+            var formData = new FormData();
+            formData.append("image", document.getElementById("myFile").files[0]);
+            xhttpr.send(document.getElementById("myFile").files[0]);
+
+
+            xhttpr.onload = () => {
+                console.log(xhttpr.response);
+                (xhttpr.response)
+                if (xhttpr.status === 200) {
+
+
+
+                } else {
                     alert("Error");
                 }
 
@@ -104,8 +138,43 @@
         }
 
 
+
         displayProducts();
     </script>
+
+<style>
+    table {
+        border: 1px solid #ccc;
+        width: 100%;
+        background-color:white ;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr {
+        background-color: #f2f2f2;
+        margin-top:5px ;
+    }
+    tr:nth-child(even){
+        background-color: #6b0707;
+        margin-top:5px ;
+    }
+
+    th {
+        background-color: #18072e;
+        color: white;
+    }
+
+    button {
+        background-color: #18072e;
+        color: white;
+        padding: 5px;
+    }
+</style>
 
 </head>
 
@@ -118,6 +187,7 @@
                 <th>Code</th>
                 <th>Product Name</th>
                 <th>Price </th>
+                <th>Action</th>
             </tr>
         </table>
     </div>
@@ -133,6 +203,7 @@
         <input type="text" id="code"><br>
         <label>Price</label><br>
         <input type="text" id="price"><br><br>
+        <input type="file" id="myFile" name="filename"><br><br>
         <button onclick="addProduct()">ADD</button>
 
     </div>

@@ -22,6 +22,11 @@ public class DemoController {
 		return "home";
 	}
 
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() {
+		return "index";
+	}
+
     
     
 }
